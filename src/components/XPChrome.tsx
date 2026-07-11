@@ -3,6 +3,16 @@ import { useEffect, useState, type ReactNode } from "react";
 import { getQueue } from "@/lib/queue";
 
 
+function useEmbedded() {
+  const [embedded, setEmbedded] = useState(false);
+  useEffect(() => {
+    const inFrame = typeof window !== "undefined" && window.self !== window.top;
+    const hasParam = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("embed");
+    setEmbedded(inFrame || hasParam);
+  }, []);
+  return embedded;
+}
+
 export function XPWindow({
   title,
   icon = "🎬",
@@ -12,6 +22,18 @@ export function XPWindow({
   icon?: string;
   children: ReactNode;
 }) {
+  const embedded = useEmbedded();
+  if (embedded) {
+    return (
+      <div className="w-full h-full">
+        <div className="crt-screen">
+          {children}
+          <div className="crt-scanlines absolute inset-0" />
+          <div className="crt-vignette" />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="xp-window w-full max-w-[1024px] mx-auto">
       <div className="xp-titlebar">
