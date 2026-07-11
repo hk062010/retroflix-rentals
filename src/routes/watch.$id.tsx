@@ -100,16 +100,21 @@ function WatchPage() {
               <div
                 className="relative aspect-video border-4 border-gray-800 overflow-hidden"
                 style={{
-                  background: movie.color,
+                  background: movie.backdrop
+                    ? `url(${movie.backdrop}) center/cover no-repeat`
+                    : movie.color,
                   boxShadow: "inset 0 0 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,150,255,0.2)",
                   imageRendering: quality === "240p" ? "pixelated" : "auto",
                 }}
               >
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center text-white text-center"
-                  style={{ filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)" }}
+                  style={{
+                    filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)",
+                    background: movie.backdrop ? "rgba(0,0,0,0.35)" : "transparent",
+                  }}
                 >
-                  <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>
+                  {!movie.backdrop && <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>}
                   <div
                     className="text-3xl font-bold"
                     style={{ textShadow: "3px 3px 0 #000" }}
