@@ -5,7 +5,7 @@ import { sfx } from "@/lib/sounds";
 import { wm, useWindows } from "@/lib/window-manager";
 
 export function Taskbar({ onStart }: { onStart: () => void }) {
-  const { windows } = useWindows();
+  const { windows, focus } = useWindows();
   const [time, setTime] = useState("");
   const [speed, setLocalSpeed] = useState<Speed>("512k");
   const [qCount, setQCount] = useState(0);
