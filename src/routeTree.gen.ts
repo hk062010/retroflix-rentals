@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as QueueRouteImport } from './routes/queue'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as BrowseRouteImport } from './routes/browse'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WatchIdRouteImport } from './routes/watch.$id'
 
@@ -30,6 +31,11 @@ const BrowseRoute = BrowseRouteImport.update({
   path: '/browse',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const WatchIdRoute = WatchIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
   '/queue': typeof QueueRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
   '/queue': typeof QueueRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
   '/queue': typeof QueueRoute
@@ -65,14 +74,22 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/browse' | '/home' | '/queue' | '/watch/$id'
+  fullPaths: '/' | '/assistant' | '/browse' | '/home' | '/queue' | '/watch/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/browse' | '/home' | '/queue' | '/watch/$id'
-  id: '__root__' | '/' | '/browse' | '/home' | '/queue' | '/watch/$id'
+  to: '/' | '/assistant' | '/browse' | '/home' | '/queue' | '/watch/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/assistant'
+    | '/browse'
+    | '/home'
+    | '/queue'
+    | '/watch/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssistantRoute: typeof AssistantRoute
   BrowseRoute: typeof BrowseRoute
   HomeRoute: typeof HomeRoute
   QueueRoute: typeof QueueRoute
@@ -102,6 +119,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +145,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssistantRoute: AssistantRoute,
   BrowseRoute: BrowseRoute,
   HomeRoute: HomeRoute,
   QueueRoute: QueueRoute,
