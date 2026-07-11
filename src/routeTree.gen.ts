@@ -13,6 +13,7 @@ import { Route as QueueRouteImport } from './routes/queue'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as BrowseRouteImport } from './routes/browse'
 import { Route as AssistantRouteImport } from './routes/assistant'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WatchIdRouteImport } from './routes/watch.$id'
 
@@ -36,6 +37,11 @@ const AssistantRoute = AssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const WatchIdRoute = WatchIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/assistant': typeof AssistantRoute
   '/browse': typeof BrowseRoute
   '/home': typeof HomeRoute
@@ -74,12 +83,27 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/assistant' | '/browse' | '/home' | '/queue' | '/watch/$id'
+  fullPaths:
+    | '/'
+    | '/account'
+    | '/assistant'
+    | '/browse'
+    | '/home'
+    | '/queue'
+    | '/watch/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/assistant' | '/browse' | '/home' | '/queue' | '/watch/$id'
+  to:
+    | '/'
+    | '/account'
+    | '/assistant'
+    | '/browse'
+    | '/home'
+    | '/queue'
+    | '/watch/$id'
   id:
     | '__root__'
     | '/'
+    | '/account'
     | '/assistant'
     | '/browse'
     | '/home'
@@ -89,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRoute
   AssistantRoute: typeof AssistantRoute
   BrowseRoute: typeof BrowseRoute
   HomeRoute: typeof HomeRoute
@@ -126,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -145,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRoute,
   AssistantRoute: AssistantRoute,
   BrowseRoute: BrowseRoute,
   HomeRoute: HomeRoute,
