@@ -77,14 +77,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Netflix 2006 — Movies Delivered. Entertainment Connected." },
+      { name: "description", content: "Retro Netflix from 2006: DVD rental queue, dial-up trailers, and a Windows XP-era desktop experience." },
+      { property: "og:title", content: "Netflix 2006" },
+      { property: "og:description", content: "Rent DVDs, manage your queue, and stream 240p previews — the way we did it in 2006." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
