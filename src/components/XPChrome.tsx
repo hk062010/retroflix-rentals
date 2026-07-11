@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { getQueue } from "@/lib/queue";
 
+
 export function XPWindow({
   title,
   icon = "🎬",
@@ -29,6 +30,7 @@ export function XPWindow({
       <div className="crt-screen">
         {children}
         <div className="crt-scanlines absolute inset-0" />
+        <div className="crt-vignette" />
       </div>
     </div>
   );
@@ -118,8 +120,35 @@ export function StatusBar({ status = "Ready" }: { status?: string }) {
 }
 
 export function DesktopShell({ children }: { children: ReactNode }) {
+  const { location } = useRouterState();
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 750);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
   return (
     <div className="xp-desktop min-h-screen flex flex-col">
+      {loading && (
+        <div className="fixed inset-x-0 top-0 z-50 flex justify-center pointer-events-none">
+          <div className="xp-window mt-24 w-[360px] pointer-events-auto">
+            <div className="xp-titlebar">
+              <span className="xp-hourglass">⌛</span>
+              <span className="flex-1">Loading Netflix.com…</span>
+            </div>
+            <div className="p-3 bg-[color:var(--xp-window)] space-y-2">
+              <div className="text-[11px]">Please wait while the page loads…</div>
+              <div className="xp-progress-animated">
+                <div className="xp-progress-fill" />
+              </div>
+              <div className="text-[10px] text-gray-600">
+                Connected at 56.6 Kbps · Transferring data from netflix.com
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex-1 p-4 pb-2">{children}</div>
       <StatusBar />
     </div>
