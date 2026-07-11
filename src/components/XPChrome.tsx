@@ -122,11 +122,44 @@ export function StatusBar({ status = "Ready" }: { status?: string }) {
 export function DesktopShell({ children }: { children: ReactNode }) {
   const { location } = useRouterState();
   const [loading, setLoading] = useState(false);
+  const [embedded, setEmbedded] = useState(false);
+
+  useEffect(() => {
+    // Detect iframe embed OR ?embed=1 query
+    const inFrame = typeof window !== "undefined" && window.self !== window.top;
+    const hasParam = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("embed");
+    setEmbedded(inFrame || hasParam);
+  }, []);
+
   useEffect(() => {
     setLoading(true);
-    const t = setTimeout(() => setLoading(false), 750);
+    const isDialup = typeof document !== "undefined" && document.documentElement.dataset.dialup === "56k";
+    const t = setTimeout(() => setLoading(false), isDialup ? 2200 : 500);
     return () => clearTimeout(t);
   }, [location.pathname]);
+
+  if (embedded) {
+    // Rendered inside an XP window — skip the outer wallpaper + taskbar.
+    return (
+      <div className="min-h-screen flex flex-col bg-[color:var(--xp-window)]">
+        {loading && (
+          <div className="fixed inset-x-0 top-0 z-50 flex justify-center pointer-events-none">
+            <div className="xp-window mt-8 w-[340px] pointer-events-auto">
+              <div className="xp-titlebar">
+                <span className="xp-hourglass">⌛</span>
+                <span className="flex-1">Loading page…</span>
+              </div>
+              <div className="p-3 bg-[color:var(--xp-window)] space-y-2">
+                <div className="text-[11px]">Transferring data from netflix.com…</div>
+                <div className="xp-progress-animated"><div className="xp-progress-fill" /></div>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="flex-1">{children}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="xp-desktop min-h-screen flex flex-col">
@@ -139,12 +172,8 @@ export function DesktopShell({ children }: { children: ReactNode }) {
             </div>
             <div className="p-3 bg-[color:var(--xp-window)] space-y-2">
               <div className="text-[11px]">Please wait while the page loads…</div>
-              <div className="xp-progress-animated">
-                <div className="xp-progress-fill" />
-              </div>
-              <div className="text-[10px] text-gray-600">
-                Connected at 56.6 Kbps · Transferring data from netflix.com
-              </div>
+              <div className="xp-progress-animated"><div className="xp-progress-fill" /></div>
+              <div className="text-[10px] text-gray-600">Connected at 56.6 Kbps · Transferring data from netflix.com</div>
             </div>
           </div>
         </div>
