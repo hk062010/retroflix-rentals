@@ -38,27 +38,39 @@ export function Taskbar({ onStart }: { onStart: () => void }) {
         <span>start</span>
       </button>
       <div className="flex-1 flex gap-1 pl-2 overflow-hidden">
-        {windows.map((w) => (
-          <button
-            key={w.id}
-            onClick={() => { sfx.click(); w.minimized ? wm.focus(w.id) : wm.minimize(w.id); }}
-            className="text-[11px] flex items-center gap-1 px-2 py-1 min-w-[130px] max-w-[180px] truncate border"
-            style={{
-              background: wm.get().focus === w.id && !w.minimized
-                ? "linear-gradient(180deg,#1560c9 0%,#3a89e9 100%)"
-                : "linear-gradient(180deg,#4a90e2 0%,#245edb 100%)",
-              borderColor: "#0146c4",
-              color: "white",
-              textShadow: "1px 1px 0 rgba(0,0,0,0.4)",
-              boxShadow: wm.get().focus === w.id && !w.minimized
-                ? "inset 0 2px 3px rgba(0,0,0,0.4)"
-                : "inset 0 1px 0 rgba(255,255,255,0.3)",
-            }}
-          >
-            <span>{w.icon}</span>
-            <span className="truncate">{w.title}</span>
-          </button>
-        ))}
+        {windows.map((w) => {
+          const active = focus === w.id && !w.minimized;
+          return (
+            <button
+              key={w.id}
+              onClick={() => {
+                sfx.click();
+                if (w.minimized) wm.focus(w.id);
+                else if (active) wm.minimize(w.id);
+                else wm.focus(w.id);
+              }}
+              className="text-[11px] flex items-center gap-1 px-2 py-1 min-w-[130px] max-w-[180px] truncate border transition-colors"
+              style={{
+                background: active
+                  ? "linear-gradient(180deg,#1560c9 0%,#3a89e9 100%)"
+                  : w.minimized
+                    ? "linear-gradient(180deg,#6ea3e8 0%,#3f74c9 100%)"
+                    : "linear-gradient(180deg,#4a90e2 0%,#245edb 100%)",
+                borderColor: "#0146c4",
+                color: "white",
+                opacity: w.minimized ? 0.75 : 1,
+                fontStyle: w.minimized ? "italic" : "normal",
+                textShadow: "1px 1px 0 rgba(0,0,0,0.4)",
+                boxShadow: active
+                  ? "inset 0 2px 3px rgba(0,0,0,0.4)"
+                  : "inset 0 1px 0 rgba(255,255,255,0.3)",
+              }}
+            >
+              <span>{w.icon}</span>
+              <span className="truncate">{w.title}</span>
+            </button>
+          );
+        })}
       </div>
       <div className="flex items-center gap-2 px-2 border-l border-blue-400/60 bg-blue-900/30 h-full">
         <button
