@@ -5,12 +5,18 @@ import { saveProfile, getProfile } from "@/lib/profile";
 type Phase = "bios" | "boot" | "login" | "connect" | "done";
 
 export function BootSequence({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState<Phase>(() => (typeof window !== "undefined" && sessionStorage.getItem("booted") ? "done" : "bios"));
-  const [username, setUsername] = useState(() => getProfile()?.username ?? "reed");
+  const [phase, setPhase] = useState<Phase | null>(null);
+  const [username, setUsername] = useState("reed");
   const [password, setPassword] = useState("••••••••");
   const [connectStep, setConnectStep] = useState(0);
 
   useEffect(() => {
+    if (phase === null) {
+      const booted = typeof window !== "undefined" && sessionStorage.getItem("booted");
+      setUsername(getProfile()?.username ?? "reed");
+      setPhase(booted ? "done" : "bios");
+      return;
+    }
     if (phase === "done") { onDone(); return; }
     if (phase === "bios") {
       const t = setTimeout(() => setPhase("boot"), 1400);
