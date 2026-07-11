@@ -44,7 +44,7 @@ export function BootSequence({ onDone }: { onDone: () => void }) {
     }
   }, [phase, onDone]);
 
-  if (phase === "done") return null;
+  if (phase === null || phase === "done") return null;
 
   if (phase === "bios") {
     return (
