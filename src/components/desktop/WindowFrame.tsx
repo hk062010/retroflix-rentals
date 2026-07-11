@@ -44,6 +44,7 @@ export function WindowFrame({ w, children }: { w: WindowState; children: ReactNo
     <div
       ref={ref}
       className="xp-window absolute flex flex-col"
+      data-anim={anim ?? undefined}
       style={{
         left: w.x, top: w.y, width: w.w, height: w.h, zIndex: w.z,
         boxShadow: focused
@@ -51,7 +52,7 @@ export function WindowFrame({ w, children }: { w: WindowState; children: ReactNo
           : "0 4px 12px rgba(0,0,0,0.3)",
         opacity: focused ? 1 : 0.96,
       }}
-      onMouseDown={() => wm.focus(w.id)}
+      onMouseDown={() => { if (!anim) wm.focus(w.id); }}
     >
       <div
         className="xp-titlebar select-none cursor-move"
