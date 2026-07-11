@@ -4,34 +4,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -40,105 +21,244 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-xp-blue: var(--xp-blue);
+  --color-xp-blue-dark: var(--xp-blue-dark);
+  --color-xp-red: var(--xp-red);
+  --font-xp: "Tahoma", "Verdana", "Geneva", sans-serif;
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  --radius: 0.25rem;
+  --background: oklch(0.55 0.15 250);
+  --foreground: oklch(0.15 0.02 250);
+  --card: oklch(0.98 0.005 250);
+  --card-foreground: oklch(0.15 0.02 250);
+  --primary: oklch(0.45 0.18 255);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9 0.02 250);
+  --secondary-foreground: oklch(0.2 0.02 250);
+  --muted: oklch(0.94 0.01 250);
+  --muted-foreground: oklch(0.45 0.02 250);
+  --accent: oklch(0.75 0.2 60);
+  --accent-foreground: oklch(0.15 0.02 250);
+  --border: oklch(0.55 0.1 255);
+  --input: oklch(0.98 0.005 250);
+  --ring: oklch(0.65 0.15 60);
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --xp-blue: #2a5fd9;
+  --xp-blue-dark: #0831d9;
+  --xp-red: #e01b24;
+  --xp-taskbar: linear-gradient(180deg, #245edb 0%, #3f8cf4 8%, #245edb 40%, #1941a5 88%, #0f3caf 100%);
+  --xp-titlebar: linear-gradient(180deg, #0058e0 0%, #3591f3 8%, #1a68e0 40%, #0755d9 90%, #0146c4 100%);
+  --xp-window: #ece9d8;
+  --xp-button: linear-gradient(180deg, #fdfdfd 0%, #f0f0e6 45%, #d8d5c4 55%, #ece9d8 100%);
+  --xp-button-blue: linear-gradient(180deg, #f5faff 0%, #b8d4ff 45%, #4a8ce0 55%, #2464c7 100%);
+  --netflix-red: #e50914;
+  --netflix-dark: #831010;
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
+  html, body { font-family: var(--font-xp); }
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background: var(--xp-taskbar);
+    color: var(--foreground);
+    min-height: 100vh;
   }
+}
+
+/* ===== XP Desktop wallpaper: bliss-inspired gradient ===== */
+@utility xp-desktop {
+  background:
+    radial-gradient(ellipse at 30% 20%, #a8d8ff 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 90%, #4d9c3f 0%, transparent 60%),
+    linear-gradient(180deg, #71b7ff 0%, #4b93e6 45%, #63a548 55%, #3d7a2e 100%);
+  min-height: 100vh;
+}
+
+/* ===== XP Window Chrome ===== */
+@utility xp-window {
+  background: var(--xp-window);
+  border: 1px solid #0831d9;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.4), inset 0 0 0 1px #fff;
+  overflow: hidden;
+}
+
+@utility xp-titlebar {
+  background: var(--xp-titlebar);
+  color: white;
+  padding: 4px 6px 4px 8px;
+  font-weight: bold;
+  font-size: 12px;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #0146c4;
+}
+
+@utility xp-titlebar-btn {
+  width: 22px;
+  height: 20px;
+  border: 1px solid #003bb1;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #4a90e2 0%, #1e5cc7 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+
+@utility xp-btn {
+  background: var(--xp-button);
+  border: 1px solid #003c74;
+  border-radius: 3px;
+  padding: 4px 14px;
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  color: #000;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  min-width: 75px;
+}
+@utility xp-btn-primary {
+  background: var(--xp-button-blue);
+  border: 1px solid #003c74;
+  border-radius: 3px;
+  padding: 4px 14px;
+  font-size: 11px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  min-width: 75px;
+}
+
+@utility xp-input {
+  background: white;
+  border: 1px solid #7f9db9;
+  padding: 3px 5px;
+  font-family: Tahoma, sans-serif;
+  font-size: 12px;
+  border-radius: 0;
+  outline: none;
+}
+
+@utility xp-panel {
+  background: var(--xp-window);
+  border: 1px solid #919b9c;
+  border-top-color: #fff;
+  border-left-color: #fff;
+}
+
+@utility xp-groupbox {
+  border: 1px solid #a0a0a0;
+  border-radius: 3px;
+  padding: 12px;
+  background: rgba(255,255,255,0.4);
+}
+
+/* Netflix red banner */
+@utility netflix-logo {
+  color: var(--netflix-red);
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-shadow: 2px 2px 0 #5a0000, 3px 3px 6px rgba(0,0,0,0.5);
+}
+
+@utility netflix-bar {
+  background: linear-gradient(180deg, #b8080e 0%, #e50914 50%, #8b0000 100%);
+  border-bottom: 2px solid #4a0000;
+  color: white;
+}
+
+/* Task/status bar */
+@utility xp-taskbar {
+  background: var(--xp-taskbar);
+  border-top: 1px solid #4a8ff0;
+  color: white;
+  font-size: 11px;
+}
+
+@utility xp-start-btn {
+  background: linear-gradient(180deg, #3ea23e 0%, #237a23 100%);
+  color: white;
+  font-family: Tahoma;
+  font-weight: bold;
+  font-style: italic;
+  padding: 4px 18px 4px 14px;
+  border-radius: 0 12px 12px 0;
+  border: 1px solid #1a5f1a;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+}
+
+/* CRT glow effect */
+@utility crt-screen {
+  position: relative;
+}
+@utility crt-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.08) 0px,
+    rgba(0,0,0,0.08) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+/* Movie card */
+@utility movie-card {
+  background: var(--xp-window);
+  border: 1px solid #7f9db9;
+  padding: 6px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+/* Progress bar */
+@utility xp-progress {
+  height: 18px;
+  background: white;
+  border: 1px solid #7f9db9;
+  padding: 2px;
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+}
+@utility xp-progress-block {
+  background: linear-gradient(180deg, #b0e070 0%, #4cb018 50%, #2a7008 100%);
+  flex: 0 0 10px;
+  height: 100%;
+}
+
+@keyframes xp-marquee {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@utility xp-blink { animation: xp-marquee 1.2s ease-in-out infinite; }
+
+@keyframes buffering {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+@utility buffer-bar {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #4cb018 0 10px,
+    #7cd048 10px 20px
+  );
+  background-size: 40px 40px;
+  animation: buffering 0.5s linear infinite;
 }
