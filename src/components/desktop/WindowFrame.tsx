@@ -5,6 +5,25 @@ import { sfx } from "@/lib/sounds";
 export function WindowFrame({ w, children }: { w: WindowState; children: ReactNode }) {
   const [drag, setDrag] = useState<{ dx: number; dy: number } | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const [anim, setAnim] = useState<"minimize" | "restore" | null>(null);
+  const [hidden, setHidden] = useState(w.minimized);
+  const prevMin = useRef(w.minimized);
+
+  useEffect(() => {
+    if (prevMin.current === w.minimized) return;
+    prevMin.current = w.minimized;
+    if (w.minimized) {
+      setAnim("minimize");
+      setHidden(false);
+      const t = setTimeout(() => { setAnim(null); setHidden(true); }, 220);
+      return () => clearTimeout(t);
+    } else {
+      setHidden(false);
+      setAnim("restore");
+      const t = setTimeout(() => setAnim(null), 220);
+      return () => clearTimeout(t);
+    }
+  }, [w.minimized]);
 
   useEffect(() => {
     if (!drag) return;
@@ -18,7 +37,7 @@ export function WindowFrame({ w, children }: { w: WindowState; children: ReactNo
     };
   }, [drag, w.id]);
 
-  if (w.minimized) return null;
+  if (hidden && !anim) return null;
   const focused = wm.get().focus === w.id;
 
   return (
