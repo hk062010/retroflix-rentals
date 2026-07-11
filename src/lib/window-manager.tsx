@@ -60,7 +60,11 @@ export const wm = {
     set({ windows: [...state.windows, w], zTop: z, focus: w.id });
   },
   close(id: string) {
-    set({ windows: state.windows.filter((w) => w.id !== id) });
+    const remaining = state.windows.filter((w) => w.id !== id);
+    const nextFocus = state.focus === id
+      ? (remaining.filter((w) => !w.minimized).sort((a, b) => b.z - a.z)[0]?.id ?? null)
+      : state.focus;
+    set({ windows: remaining, focus: nextFocus });
   },
   focus(id: string) {
     const z = state.zTop + 1;
