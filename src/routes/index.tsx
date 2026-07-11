@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { XPWindow } from "@/components/XPChrome";
+import { saveProfile } from "@/lib/profile";
 
 export const Route = createFileRoute("/")({
   component: LoginPage,
 });
+
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -57,10 +59,14 @@ function LoginPage() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  const uname = username.trim() || "guest";
+                  const email = uname.includes("@") ? uname : `${uname}@netflix.com`;
+                  saveProfile({ username: uname, email, signedInAt: Date.now() });
                   setConnecting(true);
                 }}
                 className="xp-groupbox space-y-3"
               >
+
                 <label className="block">
                   <span className="text-[11px] block mb-1">Username or Email:</span>
                   <input
