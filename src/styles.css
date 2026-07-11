@@ -505,3 +505,22 @@
 .msn-typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .msn-typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
+
+/* Window minimize/restore animations */
+@keyframes xp-window-minimize {
+  0% { transform: scale(1) translateY(0); opacity: 1; }
+  100% { transform: scale(0.2) translateY(80vh); opacity: 0; }
+}
+@keyframes xp-window-restore {
+  0% { transform: scale(0.2) translateY(80vh); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.xp-window[data-anim="minimize"] {
+  animation: xp-window-minimize 220ms ease-in forwards;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.xp-window[data-anim="restore"] {
+  animation: xp-window-restore 220ms ease-out;
+  transform-origin: 50% 100%;
+}
