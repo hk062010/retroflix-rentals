@@ -3,63 +3,13 @@ import { useEffect, useState } from "react";
 import { XPWindow, NavBar, DesktopShell } from "@/components/XPChrome";
 import { findMovie } from "@/lib/movies";
 import { addToQueue } from "@/lib/queue";
-import { getTmdbMovie } from "@/lib/tmdb.functions";
-
-type WatchMovie = {
-  id: string;
-  title: string;
-  year: number | string;
-  genre: string;
-  rating: string;
-  runtime: string;
-  synopsis: string;
-  color?: string;
-  emoji?: string;
-  poster?: string | null;
-  backdrop?: string | null;
-};
 
 export const Route = createFileRoute("/watch/$id")({
   component: WatchPage,
-  loader: async ({ params }): Promise<{ movie: WatchMovie }> => {
-    const local = findMovie(params.id);
-    if (local) {
-      return {
-        movie: {
-          id: local.id,
-          title: local.title,
-          year: local.year,
-          genre: local.genre,
-          rating: local.rating,
-          runtime: local.runtime,
-          synopsis: local.synopsis,
-          color: local.color,
-          emoji: local.emoji,
-          poster: null,
-          backdrop: null,
-        },
-      };
-    }
-    try {
-      const m = await getTmdbMovie({ data: { id: params.id } });
-      return {
-        movie: {
-          id: m.id,
-          title: m.title,
-          year: m.year || "—",
-          genre: m.genre,
-          rating: m.certification || `★ ${m.rating.toFixed(1)}`,
-          runtime: m.runtime ?? "—",
-          synopsis: m.overview,
-          color: "linear-gradient(135deg,#111,#333)",
-          emoji: "🎬",
-          poster: m.poster,
-          backdrop: m.backdrop,
-        },
-      };
-    } catch {
-      throw notFound();
-    }
+  loader: ({ params }) => {
+    const movie = findMovie(params.id);
+    if (!movie) throw notFound();
+    return { movie };
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `${loaderData?.movie.title ?? "Watch"} — Netflix 2006` }],
@@ -100,31 +50,22 @@ function WatchPage() {
               <div
                 className="relative aspect-video border-4 border-gray-800 overflow-hidden"
                 style={{
-                  background: movie.backdrop
-                    ? `url(${movie.backdrop}) center/cover no-repeat`
-                    : movie.color,
+                  background: movie.color,
                   boxShadow: "inset 0 0 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,150,255,0.2)",
                   imageRendering: quality === "240p" ? "pixelated" : "auto",
                 }}
               >
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center text-white text-center"
-                  style={{
-                    filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)",
-                    background: movie.backdrop ? "rgba(0,0,0,0.35)" : "transparent",
-                  }}
+                  style={{ filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)" }}
                 >
-                  {!movie.backdrop && <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>}
-                  <div
-                    className="text-3xl font-bold"
-                    style={{ textShadow: "3px 3px 0 #000" }}
-                  >
+                  <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>
+                  <div className="text-3xl font-bold" style={{ textShadow: "3px 3px 0 #000" }}>
                     {movie.title}
                   </div>
                   <div className="text-[10px] mt-2 opacity-80">Official Preview · 30 seconds</div>
                 </div>
 
-                {/* scanlines */}
                 <div className="crt-scanlines absolute inset-0" />
 
                 {buffering && (
@@ -144,17 +85,12 @@ function WatchPage() {
                 </div>
               </div>
 
-              {/* controls */}
               <div className="xp-panel mt-1 p-2 flex items-center gap-2">
-                <button className="xp-btn" style={{ minWidth: 0, padding: "2px 8px" }}>
-                  ⏮
-                </button>
+                <button className="xp-btn" style={{ minWidth: 0, padding: "2px 8px" }}>⏮</button>
                 <button className="xp-btn-primary" style={{ minWidth: 0, padding: "2px 10px" }}>
                   {buffering ? "⏸" : "▶"}
                 </button>
-                <button className="xp-btn" style={{ minWidth: 0, padding: "2px 8px" }}>
-                  ⏭
-                </button>
+                <button className="xp-btn" style={{ minWidth: 0, padding: "2px 8px" }}>⏭</button>
                 <div className="text-[10px] w-10 text-right">
                   0:{Math.floor(playhead).toString().padStart(2, "0")}
                 </div>
@@ -182,11 +118,7 @@ function WatchPage() {
                 <div className="text-[11px] font-bold">📡 Streaming Quality</div>
                 {(["240p", "360p"] as const).map((q) => (
                   <label key={q} className="flex items-center gap-2 text-[11px]">
-                    <input
-                      type="radio"
-                      checked={quality === q}
-                      onChange={() => setQuality(q)}
-                    />
+                    <input type="radio" checked={quality === q} onChange={() => setQuality(q)} />
                     <span>
                       {q} {q === "240p" ? "(Recommended for dial-up)" : "(Broadband — slower load)"}
                     </span>
@@ -198,15 +130,10 @@ function WatchPage() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <button
-                  className="xp-btn-primary"
-                  onClick={() => addToQueue(movie.id)}
-                >
+                <button className="xp-btn-primary" onClick={() => addToQueue(movie.id)}>
                   + Add DVD to My Queue
                 </button>
-                <Link to="/browse" className="xp-btn text-center">
-                  ← Back to Browse
-                </Link>
+                <Link to="/browse" className="xp-btn text-center">← Back to Browse</Link>
               </div>
             </div>
           </div>
