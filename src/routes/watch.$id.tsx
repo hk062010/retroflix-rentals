@@ -3,13 +3,63 @@ import { useEffect, useState } from "react";
 import { XPWindow, NavBar, DesktopShell } from "@/components/XPChrome";
 import { findMovie } from "@/lib/movies";
 import { addToQueue } from "@/lib/queue";
+import { getTmdbMovie } from "@/lib/tmdb.functions";
+
+type WatchMovie = {
+  id: string;
+  title: string;
+  year: number | string;
+  genre: string;
+  rating: string;
+  runtime: string;
+  synopsis: string;
+  color?: string;
+  emoji?: string;
+  poster?: string | null;
+  backdrop?: string | null;
+};
 
 export const Route = createFileRoute("/watch/$id")({
   component: WatchPage,
-  loader: ({ params }) => {
-    const movie = findMovie(params.id);
-    if (!movie) throw notFound();
-    return { movie };
+  loader: async ({ params }): Promise<{ movie: WatchMovie }> => {
+    const local = findMovie(params.id);
+    if (local) {
+      return {
+        movie: {
+          id: local.id,
+          title: local.title,
+          year: local.year,
+          genre: local.genre,
+          rating: local.rating,
+          runtime: local.runtime,
+          synopsis: local.synopsis,
+          color: local.color,
+          emoji: local.emoji,
+          poster: null,
+          backdrop: null,
+        },
+      };
+    }
+    try {
+      const m = await getTmdbMovie({ data: { id: params.id } });
+      return {
+        movie: {
+          id: m.id,
+          title: m.title,
+          year: m.year || "—",
+          genre: m.genre,
+          rating: m.certification || `★ ${m.rating.toFixed(1)}`,
+          runtime: m.runtime ?? "—",
+          synopsis: m.overview,
+          color: "linear-gradient(135deg,#111,#333)",
+          emoji: "🎬",
+          poster: m.poster,
+          backdrop: m.backdrop,
+        },
+      };
+    } catch {
+      throw notFound();
+    }
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `${loaderData?.movie.title ?? "Watch"} — Netflix 2006` }],
