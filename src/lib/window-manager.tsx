@@ -75,7 +75,11 @@ export const wm = {
     });
   },
   minimize(id: string) {
-    set({ windows: state.windows.map((w) => (w.id === id ? { ...w, minimized: true } : w)) });
+    const windows = state.windows.map((w) => (w.id === id ? { ...w, minimized: true } : w));
+    const nextFocus = state.focus === id
+      ? (windows.filter((w) => !w.minimized).sort((a, b) => b.z - a.z)[0]?.id ?? null)
+      : state.focus;
+    set({ windows, focus: nextFocus });
   },
   toggleMax(id: string) {
     set({
