@@ -3,13 +3,63 @@ import { useEffect, useState } from "react";
 import { XPWindow, NavBar, DesktopShell } from "@/components/XPChrome";
 import { findMovie } from "@/lib/movies";
 import { addToQueue } from "@/lib/queue";
+import { getTmdbMovie } from "@/lib/tmdb.functions";
+
+type WatchMovie = {
+  id: string;
+  title: string;
+  year: number | string;
+  genre: string;
+  rating: string;
+  runtime: string;
+  synopsis: string;
+  color?: string;
+  emoji?: string;
+  poster?: string | null;
+  backdrop?: string | null;
+};
 
 export const Route = createFileRoute("/watch/$id")({
   component: WatchPage,
-  loader: ({ params }) => {
-    const movie = findMovie(params.id);
-    if (!movie) throw notFound();
-    return { movie };
+  loader: async ({ params }): Promise<{ movie: WatchMovie }> => {
+    const local = findMovie(params.id);
+    if (local) {
+      return {
+        movie: {
+          id: local.id,
+          title: local.title,
+          year: local.year,
+          genre: local.genre,
+          rating: local.rating,
+          runtime: local.runtime,
+          synopsis: local.synopsis,
+          color: local.color,
+          emoji: local.emoji,
+          poster: null,
+          backdrop: null,
+        },
+      };
+    }
+    try {
+      const m = await getTmdbMovie({ data: { id: params.id } });
+      return {
+        movie: {
+          id: m.id,
+          title: m.title,
+          year: m.year || "—",
+          genre: m.genre,
+          rating: m.certification || `★ ${m.rating.toFixed(1)}`,
+          runtime: m.runtime ?? "—",
+          synopsis: m.overview,
+          color: "linear-gradient(135deg,#111,#333)",
+          emoji: "🎬",
+          poster: m.poster,
+          backdrop: m.backdrop,
+        },
+      };
+    } catch {
+      throw notFound();
+    }
   },
   head: ({ loaderData }) => ({
     meta: [{ title: `${loaderData?.movie.title ?? "Watch"} — Netflix 2006` }],
@@ -50,16 +100,21 @@ function WatchPage() {
               <div
                 className="relative aspect-video border-4 border-gray-800 overflow-hidden"
                 style={{
-                  background: movie.color,
+                  background: movie.backdrop
+                    ? `url(${movie.backdrop}) center/cover no-repeat`
+                    : movie.color,
                   boxShadow: "inset 0 0 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,150,255,0.2)",
                   imageRendering: quality === "240p" ? "pixelated" : "auto",
                 }}
               >
                 <div
                   className="absolute inset-0 flex flex-col items-center justify-center text-white text-center"
-                  style={{ filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)" }}
+                  style={{
+                    filter: quality === "240p" ? "blur(1.5px)" : "blur(0.5px)",
+                    background: movie.backdrop ? "rgba(0,0,0,0.35)" : "transparent",
+                  }}
                 >
-                  <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>
+                  {!movie.backdrop && <div className="text-8xl mb-2 drop-shadow-2xl">{movie.emoji}</div>}
                   <div
                     className="text-3xl font-bold"
                     style={{ textShadow: "3px 3px 0 #000" }}
