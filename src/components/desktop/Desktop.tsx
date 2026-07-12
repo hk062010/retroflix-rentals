@@ -74,7 +74,7 @@ export function Desktop() {
       </div>
 
       {/* Icons grid — z-20, always above background FX */}
-      <div className="grid grid-flow-col grid-rows-6 gap-1 p-2 auto-cols-max relative z-20">
+      <div className="inline-grid grid-flow-col grid-rows-6 gap-1 p-2 auto-cols-max relative z-20">
         {ICONS.map((ic) => (
           <button
             key={ic.id}
