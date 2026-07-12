@@ -86,7 +86,11 @@ export function Desktop() {
               outline: selected === ic.id ? "1px dotted white" : "none",
             }}
           >
-            <span className="text-4xl drop-shadow-lg">{ic.icon}</span>
+            {ic.img ? (
+              <img src={ic.img} alt="" className="w-10 h-10 object-contain drop-shadow-lg" />
+            ) : (
+              <span className="text-4xl drop-shadow-lg">{ic.icon}</span>
+            )}
             <span
               className="text-[11px] text-white text-center leading-tight"
               style={{ textShadow: "1px 1px 2px #000, 0 0 2px #000" }}
