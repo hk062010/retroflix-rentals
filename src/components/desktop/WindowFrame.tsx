@@ -59,6 +59,8 @@ export function WindowFrame({ w, children }: { w: WindowState; children: ReactNo
         style={{ background: focused ? undefined : "linear-gradient(180deg,#7a96df 0%,#93a9d9 50%,#6d84c4 100%)" }}
         onMouseDown={(e) => {
           if (w.maximized) return;
+          if ((e.target as HTMLElement).closest("button")) return;
+          e.preventDefault();
           const rect = ref.current!.getBoundingClientRect();
           setDrag({ dx: e.clientX - rect.left, dy: e.clientY - rect.top });
         }}
@@ -76,8 +78,11 @@ export function WindowFrame({ w, children }: { w: WindowState; children: ReactNo
           ✕
         </button>
       </div>
-      <div className="flex-1 overflow-hidden bg-[color:var(--xp-window)]" style={{ minHeight: 0 }}>
+      <div className="flex-1 overflow-hidden bg-[color:var(--xp-window)] relative" style={{ minHeight: 0 }}>
         {children}
+        {/* While dragging, cover the content (including any iframes) so mouse
+            events keep flowing to the parent listeners instead of the iframe. */}
+        {drag && <div className="absolute inset-0 z-50" style={{ cursor: "move" }} />}
       </div>
     </div>
   );
