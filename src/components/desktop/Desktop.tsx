@@ -62,12 +62,18 @@ export function Desktop() {
   }, []);
 
   return (
-    <div className="xp-desktop min-h-screen w-full relative overflow-hidden" onClick={() => setSelected(null)}>
-      <div className="xp-desktop-vignette" aria-hidden />
-      <div className="xp-desktop-bloom" aria-hidden />
-      <div className="xp-desktop-crt" aria-hidden />
-      {/* Icons grid */}
-      <div className="grid grid-flow-col grid-rows-6 gap-1 p-2 auto-cols-max relative z-10">
+    <div className="xp-desktop min-h-screen w-full relative overflow-hidden isolate" onClick={() => setSelected(null)}>
+      {/* Background FX layer — z-0, non-interactive. All post-processing
+          (vignette, bloom, CRT scanlines, phosphor) is contained here so it
+          can never darken or tint the icon grid, windows, or taskbar. */}
+      <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden>
+        <div className="xp-desktop-vignette" />
+        <div className="xp-desktop-bloom" />
+        <div className="xp-desktop-crt" />
+      </div>
+
+      {/* Icons grid — z-20, always above background FX */}
+      <div className="grid grid-flow-col grid-rows-6 gap-1 p-2 auto-cols-max relative z-20">
         {ICONS.map((ic) => (
           <button
             key={ic.id}
@@ -91,7 +97,7 @@ export function Desktop() {
       </div>
 
       {/* Konami hint (bottom-right, subtle) */}
-      <div className="fixed bottom-10 right-2 text-white/40 text-[9px] italic pointer-events-none z-10 select-none" style={{ textShadow: "1px 1px 2px #000" }}>
+      <div className="fixed bottom-10 right-2 text-white/40 text-[9px] italic pointer-events-none z-20 select-none" style={{ textShadow: "1px 1px 2px #000" }}>
         psst… try ⬆⬆⬇⬇⬅➡⬅➡ B A
       </div>
 
