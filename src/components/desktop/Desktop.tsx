@@ -7,7 +7,7 @@ import { StartMenu } from "./StartMenu";
 import { ModernMode } from "./ModernMode";
 import { XPError } from "./XPError";
 import { initDialup } from "@/lib/dialup";
-import netflixIcon from "@/assets/netflix.ico.asset.json";
+import netflixIcon from "@/assets/netflix.png.asset.json";
 
 type IconDef = { id: string; icon: string; img?: string; label: string; open: () => void };
 
