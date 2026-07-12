@@ -7,17 +7,18 @@ import { StartMenu } from "./StartMenu";
 import { ModernMode } from "./ModernMode";
 import { XPError } from "./XPError";
 import { initDialup } from "@/lib/dialup";
+import netflixIcon from "@/assets/netflix.ico.asset.json";
 
-type IconDef = { id: string; icon: string; label: string; open: () => void };
+type IconDef = { id: string; icon: string; img?: string; label: string; open: () => void };
 
 const ICONS: IconDef[] = [
-  { id: "netflix", icon: "🎬", label: "Netflix", open: () => wm.open({ id: "netflix", appId: "netflix", title: "Netflix.com — Microsoft Internet Explorer", icon: "🌐", url: "/home?embed=1", w: 960, h: 660 }) },
-  { id: "cinebot", icon: "💬", label: "CineBot 1.0", open: () => wm.open({ id: "cinebot", appId: "cinebot", title: "CineBot 1.0 — MSN Movie Messenger", icon: "💬", url: "/assistant?embed=1", w: 560, h: 640 }) },
-  { id: "mycomp", icon: "🖥", label: "My Computer", open: () => wm.open({ id: "mycomp", appId: "mycomputer", title: "My Computer", icon: "🖥", content: "mycomputer", w: 560, h: 400 }) },
-  { id: "docs", icon: "📁", label: "My Documents", open: () => wm.open({ id: "docs", appId: "mycomputer", title: "My Documents", icon: "📁", content: "notepad", w: 520, h: 420 }) },
-  { id: "browse", icon: "📀", label: "DVD Library", open: () => wm.open({ id: "browse", appId: "netflix", title: "Browse DVDs — Netflix.com", icon: "📀", url: "/browse?embed=1", w: 960, h: 640 }) },
-  { id: "ie", icon: "🌐", label: "Internet Explorer", open: () => wm.open({ id: "ie", appId: "ie", title: "MSN.com — Microsoft Internet Explorer", icon: "🌐", url: "/home?embed=1", w: 900, h: 620 }) },
-  { id: "recycle", icon: "🗑", label: "Recycle Bin", open: () => wm.open({ id: "recycle", appId: "recycle", title: "Recycle Bin", icon: "🗑", content: "recycle", w: 500, h: 360 }) },
+  { id: "netflix", icon: "🎬", img: netflixIcon.url, label: "Netflix", open: () => wm.open({ id: "netflix", appId: "netflix", title: "Netflix.com — Microsoft Internet Explorer", icon: "🌐", url: "/home?embed=1", w: 960, h: 660 }) },
+  { id: "cinebot", icon: "👥", label: "CineBot 1.0", open: () => wm.open({ id: "cinebot", appId: "cinebot", title: "CineBot 1.0 — MSN Movie Messenger", icon: "💬", url: "/assistant?embed=1", w: 560, h: 640 }) },
+  { id: "mycomp", icon: "💻", label: "My Computer", open: () => wm.open({ id: "mycomp", appId: "mycomputer", title: "My Computer", icon: "🖥", content: "mycomputer", w: 560, h: 400 }) },
+  { id: "docs", icon: "🗂️", label: "My Documents", open: () => wm.open({ id: "docs", appId: "mycomputer", title: "My Documents", icon: "📁", content: "notepad", w: 520, h: 420 }) },
+  { id: "browse", icon: "💿", label: "DVD Library", open: () => wm.open({ id: "browse", appId: "netflix", title: "Browse DVDs — Netflix.com", icon: "📀", url: "/browse?embed=1", w: 960, h: 640 }) },
+  { id: "ie", icon: "🌍", label: "Internet Explorer", open: () => wm.open({ id: "ie", appId: "ie", title: "MSN.com — Microsoft Internet Explorer", icon: "🌐", url: "/home?embed=1", w: 900, h: 620 }) },
+  { id: "recycle", icon: "♻️", label: "Recycle Bin", open: () => wm.open({ id: "recycle", appId: "recycle", title: "Recycle Bin", icon: "🗑", content: "recycle", w: 500, h: 360 }) },
 ];
 
 export function Desktop() {
