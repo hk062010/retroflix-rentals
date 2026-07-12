@@ -26,7 +26,7 @@ type Store = {
   zTop: number;
 };
 
-let state: Store = { windows: [], focus: null, zTop: 10 };
+let state: Store = { windows: [], focus: null, zTop: 100 };
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((l) => l());
 const set = (next: Partial<Store>) => {
