@@ -95,7 +95,7 @@ export const wm = {
   },
 };
 
-const serverSnap: Store = { windows: [], focus: null, zTop: 10 };
+const serverSnap: Store = { windows: [], focus: null, zTop: 100 };
 export function useWindows() {
   return useSyncExternalStore(wm.subscribe, wm.get, () => serverSnap);
 }
