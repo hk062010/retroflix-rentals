@@ -65,6 +65,7 @@ export function Desktop() {
     <div className="xp-desktop min-h-screen w-full relative overflow-hidden" onClick={() => setSelected(null)}>
       <div className="xp-desktop-vignette" aria-hidden />
       <div className="xp-desktop-bloom" aria-hidden />
+      <div className="xp-desktop-crt" aria-hidden />
       {/* Icons grid */}
       <div className="grid grid-flow-col grid-rows-6 gap-1 p-2 auto-cols-max relative z-0">
         {ICONS.map((ic) => (
