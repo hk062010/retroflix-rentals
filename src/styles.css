@@ -70,13 +70,13 @@
   }
 }
 
-/* ===== XP Desktop wallpaper: Frutiger Aero chrome (responsive) ===== */
+/* ===== XP Desktop wallpaper: Frutiger Aero chrome (sRGB, responsive) ===== */
 @utility xp-desktop {
-  background-image: url("/__l5e/assets-v1/c1ab9280-a765-4af9-a46a-f0ebe7d8610e/xp-wallpaper-1080p.jpg");
+  background-image: url("/__l5e/assets-v1/27851880-2e14-43a6-8391-6828924a017b/xp-wallpaper-1080p.jpg");
   background-image: image-set(
-    url("/__l5e/assets-v1/c1ab9280-a765-4af9-a46a-f0ebe7d8610e/xp-wallpaper-1080p.jpg") 1x,
-    url("/__l5e/assets-v1/416f0eea-a1a3-4eb6-991d-70acb443a2bb/xp-wallpaper-1440p.jpg") 1.5x,
-    url("/__l5e/assets-v1/70d85e75-47cf-49a5-b97d-7481747f2b38/xp-wallpaper-4k.jpg") 2x
+    url("/__l5e/assets-v1/27851880-2e14-43a6-8391-6828924a017b/xp-wallpaper-1080p.jpg") 1x,
+    url("/__l5e/assets-v1/1bb58454-7fd6-4431-8166-8ba9862f0452/xp-wallpaper-1440p.jpg") 1.5x,
+    url("/__l5e/assets-v1/0ac98ec5-a52a-468e-b732-a81676ea6aa4/xp-wallpaper-4k.jpg") 2x
   );
   background-size: cover;
   background-position: center;
@@ -85,35 +85,78 @@
   min-height: 100vh;
 }
 @media (min-width: 2200px) {
-  .xp-desktop { background-image: url("/__l5e/assets-v1/416f0eea-a1a3-4eb6-991d-70acb443a2bb/xp-wallpaper-1440p.jpg"); }
+  .xp-desktop { background-image: url("/__l5e/assets-v1/1bb58454-7fd6-4431-8166-8ba9862f0452/xp-wallpaper-1440p.jpg"); }
 }
 @media (min-width: 3200px) {
-  .xp-desktop { background-image: url("/__l5e/assets-v1/70d85e75-47cf-49a5-b97d-7481747f2b38/xp-wallpaper-4k.jpg"); }
+  .xp-desktop { background-image: url("/__l5e/assets-v1/0ac98ec5-a52a-468e-b732-a81676ea6aa4/xp-wallpaper-4k.jpg"); }
 }
 
-/* Bloom + vignette overlay applied on top of wallpaper.
-   Focal object sits right-of-center around 70% x, 55% y. */
+/* Bloom halo + lens-flare streak around chrome focal point (~72% x, 52% y).
+   Screen blend so it only lifts existing highlights (threshold-like behavior). */
 @utility xp-desktop-bloom {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 70% 55%, rgba(180, 220, 255, 0.35) 0%, rgba(120, 180, 255, 0.18) 12%, transparent 32%),
-    radial-gradient(circle at 68% 52%, rgba(255, 255, 255, 0.28) 0%, transparent 8%),
-    radial-gradient(ellipse 60% 40% at 72% 58%, rgba(90, 160, 255, 0.15) 0%, transparent 70%);
+    /* horizontal anamorphic flare */
+    linear-gradient(90deg, transparent 30%, rgba(140, 200, 255, 0.18) 60%, rgba(220, 235, 255, 0.28) 72%, rgba(140, 200, 255, 0.18) 84%, transparent 100%),
+    /* white hot core */
+    radial-gradient(circle at 72% 52%, rgba(255, 255, 255, 0.42) 0%, transparent 7%),
+    /* cyan bloom */
+    radial-gradient(circle at 72% 52%, rgba(180, 220, 255, 0.32) 0%, rgba(120, 180, 255, 0.14) 14%, transparent 34%),
+    /* soft edge glow */
+    radial-gradient(ellipse 58% 42% at 74% 55%, rgba(90, 160, 255, 0.14) 0%, transparent 72%);
   mix-blend-mode: screen;
   filter: blur(2px);
+  --bloom-opacity: 0.9;
+  opacity: var(--bloom-opacity);
 }
+/* Per-resolution bloom tuning — soften on hi-dpi so specular clusters
+   don't blow out; strengthen slightly on 1080p to lift the compressed jpeg. */
+@media (max-width: 1600px)  { .xp-desktop-bloom { --bloom-opacity: 1;    filter: blur(1.5px); } }
+@media (min-width: 1601px) and (max-width: 2559px) { .xp-desktop-bloom { --bloom-opacity: 0.85; filter: blur(2.5px); } }
+@media (min-width: 2560px)  { .xp-desktop-bloom { --bloom-opacity: 0.7;  filter: blur(4px); } }
+
 @utility xp-desktop-vignette {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 90% 80% at 70% 55%, transparent 45%, rgba(0, 8, 30, 0.55) 100%),
+    radial-gradient(ellipse 90% 80% at 72% 52%, transparent 45%, rgba(0, 8, 30, 0.55) 100%),
     linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 20%, transparent 82%, rgba(0,0,0,0.35) 100%);
 }
+
+/* CRT scanlines + phosphor shadow-mask overlay — very subtle so gradients survive */
+@utility xp-desktop-crt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    /* scanlines */
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.10) 0px,
+      rgba(0, 0, 0, 0.10) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    /* phosphor triads (R/G/B stripes) */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.05) 0px,
+      rgba(255, 0, 0, 0.05) 1px,
+      rgba(0, 255, 0, 0.05) 1px,
+      rgba(0, 255, 0, 0.05) 2px,
+      rgba(0, 100, 255, 0.05) 2px,
+      rgba(0, 100, 255, 0.05) 3px
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
 
 /* ===== XP Window Chrome ===== */
 @utility xp-window {
