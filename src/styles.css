@@ -70,14 +70,25 @@
   }
 }
 
-/* ===== XP Desktop wallpaper: Frutiger Aero chrome ===== */
+/* ===== XP Desktop wallpaper: Frutiger Aero chrome (responsive) ===== */
 @utility xp-desktop {
-  background-image: url("/src/assets/xp-wallpaper.jpg");
+  background-image: url("/__l5e/assets-v1/c1ab9280-a765-4af9-a46a-f0ebe7d8610e/xp-wallpaper-1080p.jpg");
+  background-image: image-set(
+    url("/__l5e/assets-v1/c1ab9280-a765-4af9-a46a-f0ebe7d8610e/xp-wallpaper-1080p.jpg") 1x,
+    url("/__l5e/assets-v1/416f0eea-a1a3-4eb6-991d-70acb443a2bb/xp-wallpaper-1440p.jpg") 1.5x,
+    url("/__l5e/assets-v1/70d85e75-47cf-49a5-b97d-7481747f2b38/xp-wallpaper-4k.jpg") 2x
+  );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-color: #041838;
   min-height: 100vh;
+}
+@media (min-width: 2200px) {
+  .xp-desktop { background-image: url("/__l5e/assets-v1/416f0eea-a1a3-4eb6-991d-70acb443a2bb/xp-wallpaper-1440p.jpg"); }
+}
+@media (min-width: 3200px) {
+  .xp-desktop { background-image: url("/__l5e/assets-v1/70d85e75-47cf-49a5-b97d-7481747f2b38/xp-wallpaper-4k.jpg"); }
 }
 
 /* ===== XP Window Chrome ===== */
